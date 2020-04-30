@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.6.RELEASE</version>
+        <relativePath/>
+    </parent>
+    <groupId>com.fwtai</groupId>
+    <artifactId>admin_security</artifactId>
+    <version>v1.0.0</version>
+    <description>
+
+        基于 Spring Boot 2 + spring security + jwt 构建前后端分离
+
+        流程:
+
+        请求登录,在 LoginAuthenticationFilter 处理完登录并认证用户名和密码成功后，则到了LoginAuthenticationFilter单独处理,
+        从内存数据库里查询是否存在才生成token并存入内存数据库,因为单独处理是方便存入内存数据库,最后返回给客户端
+
+        带token的请求接口
+        通过token认证流程,在请求通过 TokenRequestFilter类的方法doFilterInternal()处理,判断请求头或判断是否需要放行的url，若不放行的url的则获取token并解析token的数据
+
+        走不走动态或是否要更为强大的权限处理区别在与:git有两个版本(分支dynamic走的是动态权限[anyRequest().access];分支no_dynamic走的不是更为强大的授权)
+
+        //第3步：请求权限配置,放行注册API请求，其它任何请求都必须经过身份验证.
+        http.authorizeRequests().antMatchers(HttpMethod.POST,ConfigFile.urls).permitAll()//注意还有请求方式
+        //动态加载资源
+        .anyRequest().access("@dynamicPermission.checkPermisstion(request,authentication)");
+
+        //第3步：请求权限配置,放行注册API请求，其它任何请求都必须经过身份验证.
+        http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/register").permitAll()//注意还有请求方式
+        .anyRequest().authenticated();//不走动态加载权限的处理
+
+    </description>
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.68</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.1</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.1</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.19</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.4.2</version>
+        </dependency>
+
+        <!--解决生成的token存储 -->
+        <dependency>
+            <groupId>com.diffplug.guava</groupId>
+            <artifactId>guava-cache</artifactId>
+            <version>19.0.0</version>
+        </dependency>
+        <!-- MyBatis-plus 插件 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

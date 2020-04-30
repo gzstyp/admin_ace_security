@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+</head>
+<body>
+<h3>spring boot 2.x.x + spring security5</h3>
+<form method="post" action="/user/register">
+    <input type="text" name="userName" style="width:200px;height:34px;line-height:34px;">
+    <input type="password" name="password" style="width:200px;height:34px;line-height:34px;">
+    <input value="注册" class="btn btn-primary" type="submit">
+</form>
+<br/>
+<form method="post" action="/user/login">
+    <input type="text" name="userName" style="width:200px;height:34px;line-height:34px;">
+    <input type="password" name="password" style="width:200px;height:34px;line-height:34px;">
+    <input value="登录" type="submit" class="btn btn-success">
+</form>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap.js"></script>
+<script src="/bootstrap/js/npm.js"></script>
+</body>
+</html>
