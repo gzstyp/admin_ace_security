@@ -38,12 +38,14 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     //登录成功处理器
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;
+
     @Autowired
     private LoginFailureHandler loginFailureHandler;
 
     //退出处理器
     @Autowired
     private LogoutService logoutService;
+
     @Autowired
     private LogoutSuccessService logoutSuccessService;
 
@@ -52,10 +54,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     /**
      * 从容器中取出 AuthenticationManagerBuilder，执行方法里面的逻辑之后，放回容器
-     *
      * @param builder
      * @throws Exception
-     */
+    */
     @Autowired
     public void configureAuthentication(final AuthenticationManagerBuilder builder) throws Exception {
         builder.userDetailsService(userDetailsService).passwordEncoder(passworder);
