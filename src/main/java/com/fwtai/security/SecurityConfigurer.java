@@ -29,9 +29,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Autowired
     private RequestFilter requestFilter;
 
-    //@Autowired
-    //private AfterCompleteFilter afterCompleteFilter;
-
     @Autowired
     private AuthenticationPointHandler authenticationPointHandler;
 

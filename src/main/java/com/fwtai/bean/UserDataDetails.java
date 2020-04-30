@@ -6,7 +6,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 /**
- * 要实现UserDetails接口，这个接口是security提供的
+ * 要实现UserDetails接口,实现登录认证及权限鉴权
+ * @作者 田应平
+ * @版本 v1.0
+ * @创建时间 2020/5/1 0:43
+ * @QQ号码 444141300
+ * @Email service@yinlz.com
+ * @官网 <url>http://www.yinlz.com</url>
 */
 public class UserDataDetails implements UserDetails {
 
@@ -22,7 +28,9 @@ public class UserDataDetails implements UserDetails {
 
     public UserDataDetails(){}
 
-    //不含角色和权限
+    /**
+     * 不含角色和权限,用于身份认证
+    */
     public UserDataDetails(final String userId,final String username,final String password,final Integer enabled){
         this.userId = userId;
         this.username = username;
@@ -30,7 +38,9 @@ public class UserDataDetails implements UserDetails {
         this.enabled = (enabled == 0);//0正常;1禁用
     }
 
-    //含有角色和权限
+    /**
+     * 含有角色和权限,用于token认证通过后获取全部的角色和权限
+    */
     public UserDataDetails(final String userId,final String username,final String password,final Integer enabled,final Collection<? extends GrantedAuthority> authorities) {
         this.userId = userId;
         this.username = username;
