@@ -2,18 +2,15 @@ package com.fwtai.security;
 
 import com.fwtai.config.ConfigFile;
 import com.fwtai.config.FlagToken;
-import com.fwtai.config.RenewalToken;
 import com.fwtai.service.UserServiceDetails;
 import com.fwtai.tool.ToolToken;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
