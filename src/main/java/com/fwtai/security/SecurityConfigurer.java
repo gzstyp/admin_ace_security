@@ -2,8 +2,8 @@ package com.fwtai.security;
 
 import com.fwtai.components.Passworder;
 import com.fwtai.config.ConfigFile;
+import com.fwtai.service.UserServiceDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
 
@@ -23,13 +22,13 @@ import org.springframework.web.cors.CorsUtils;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
-    @Autowired
+    /*@Autowired
     @Qualifier("userServiceDetails")
-    private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;*/
 
-    /*//若出错则用上面的方式注解,这个也是可以的
+    //若出错则用上面的方式注解,这个也是可以的
     @Autowired
-    private UserServiceDetails userDetailsService;*/
+    private UserServiceDetails userDetailsService;
 
     @Autowired
     private RequestFilter requestFilter;
