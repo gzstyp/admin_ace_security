@@ -27,7 +27,7 @@
         SELECT kid,user_name, user_password,enabled FROM VIEW_USER_LOGIN WHERE kid = #{userId} LIMIT 1
     </select>
 
-    <!-- 仅仅获取用户userid的角色(不含权限) -->
+    <!-- 仅仅获取用户userid的角色(不含权限)[目前暂时用不到] -->
     <select id="getRoleByUserId" resultType="String" parameterType="String">
         select sr.role_flag from sys_user_role sur
         left join sys_role sr on sr.kid = sur.role_id

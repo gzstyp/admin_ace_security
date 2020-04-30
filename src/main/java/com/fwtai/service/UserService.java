@@ -45,19 +45,34 @@ public class UserService{
         return daoHandle.queryListEntity("sys_user.getRolePermissions",userId);
     }
 
+    /**
+     * 通过userName查询用户信息,用户登录
+     * @param username
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2020/5/1 0:54
+    */
     public SysUser getUserByUserName(final String username){
         return daoHandle.queryForEntity("sys_user.getUserByUserName",username);
     }
 
+    /**
+     * 通过userId查询用户的全部角色和权限的信息
+     * @param userId
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2020/5/1 0:53
+    */
     public SysUser getUserById(final String userId){
-            return daoHandle.queryForEntity("sys_user.getUserById",userId);
-        }
+        return daoHandle.queryForEntity("sys_user.getUserById",userId);
+    }
 
     public String register(final HashMap<String,String> params){
         final String p_username = "username";
         final String p_password = "password";
         final String validate = ToolClient.validateField(params,p_username,p_password);
-        if(validate != null)return validate;
+        if(validate != null)
+            return validate;
         params.put("kid",ToolString.getIdsChar32());
         params.put("password",passworder.encode(params.get(p_password)));
         final int rows = daoHandle.execute("sys_user.addUser",params);
