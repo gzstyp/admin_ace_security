@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * 要实现UserDetails接口，这个接口是security提供的
 */
-public class AuthUser implements UserDetails {
+public class UserDataDetails implements UserDetails {
 
     private String userId;
 
@@ -20,10 +20,10 @@ public class AuthUser implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public AuthUser(){}
+    public UserDataDetails(){}
 
     //不含角色和权限
-    public AuthUser(final String userId,final String username,final String password,final Integer enabled){
+    public UserDataDetails(final String userId,final String username,final String password,final Integer enabled){
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -31,7 +31,7 @@ public class AuthUser implements UserDetails {
     }
 
     //含有角色和权限
-    public AuthUser(final String userId,final String username,final String password,final Integer enabled,final Collection<? extends GrantedAuthority> authorities) {
+    public UserDataDetails(final String userId,final String username,final String password,final Integer enabled,final Collection<? extends GrantedAuthority> authorities) {
         this.userId = userId;
         this.username = username;
         this.password = password;

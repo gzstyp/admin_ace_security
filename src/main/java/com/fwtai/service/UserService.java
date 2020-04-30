@@ -1,18 +1,13 @@
 package com.fwtai.service;
 
-import com.fwtai.bean.AuthUser;
 import com.fwtai.bean.SysUser;
 import com.fwtai.components.Passworder;
 import com.fwtai.dao.DaoHandle;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

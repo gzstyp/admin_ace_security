@@ -1,6 +1,6 @@
 package com.fwtai.service;
 
-import com.fwtai.bean.AuthUser;
+import com.fwtai.bean.UserDataDetails;
 import com.fwtai.bean.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,7 +33,7 @@ public class UserServiceDetails implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("用户名或密码错误");
         }else {
-            return new AuthUser(user.getKid(),user.getUserName(),user.getUserPassword(),user.getEnabled());
+            return new UserDataDetails(user.getKid(),user.getUserName(),user.getUserPassword(),user.getEnabled());
         }
     }
 
@@ -45,7 +45,7 @@ public class UserServiceDetails implements UserDetailsService {
             for (final String role : roles){
                 authorities.add(new SimpleGrantedAuthority(role));
             }
-            return new AuthUser(user.getKid(),user.getUserName(),user.getUserPassword(),user.getEnabled(),authorities);
+            return new UserDataDetails(user.getKid(),user.getUserName(),user.getUserPassword(),user.getEnabled(),authorities);
         }
         throw new UsernameNotFoundException("账号信息不存在");
     }
