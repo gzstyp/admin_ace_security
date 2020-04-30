@@ -83,15 +83,24 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         // todo,要是没有这个则跳转到登录界面
         http.exceptionHandling().authenticationEntryPoint(authenticationPointHandler).accessDeniedHandler(accessDeniedService);
 
+        //第7步：登录(如果报错则使用下面的那个)
+        http.formLogin()
+            .failureForwardUrl("/login.html")
+            .loginPage("/login.html")
+            .loginProcessingUrl("/user/login")
+            .usernameParameter("username")
+            .passwordParameter("password")
+            .permitAll();
+
         //第7步：登录,因为使用前端发送JSON方式进行登录，所以登录模式不设置也是可以的。
-        http.formLogin();
+        //http.formLogin();
 
         //第8步：退出
         http.logout().addLogoutHandler(logoutService).logoutSuccessHandler(logoutSuccessService);
     }
 
     /**
-     * 手动注册账号、密码拦截器
+     * 手动注册账号、密码拦截器(感觉这个不管用???)
      * @return
      * @throws Exception
      */
