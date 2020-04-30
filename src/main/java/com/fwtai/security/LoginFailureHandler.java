@@ -16,7 +16,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler{
 
     @Override
     public void onAuthenticationFailure(final HttpServletRequest request,final HttpServletResponse response,final AuthenticationException e){
-        final String msg = "用户名或密码错误0001:" + e.getMessage();
+        final String msg = "用户名或密码错误:" + e.getMessage();
         final String json = ToolClient.exceptionJson(msg);
         ToolClient.responseJson(json,response);
     }
