@@ -7,17 +7,12 @@ package com.fwtai.config;
  * @QQ号码 444141300
  * @Email service@dwlai.com
  * @官网 http://www.fwtai.com
- */
-
+*/
 public final class ConfigFile{
 
     public final static String[] urls = {"/user/register"};
 
-    public final static String roles = "roles";
-
     public static final String TOKEN_HEADER = "Authorization";
-
-    public static final String TOKEN_PREFIX = "Bearer ";
 
     /**统一全局的code的状态码json关键字key关键字响应给客户端*/
     public final static String code = "code";

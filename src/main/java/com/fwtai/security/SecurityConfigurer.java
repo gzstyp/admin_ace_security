@@ -22,10 +22,6 @@ import org.springframework.web.cors.CorsUtils;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
-    /*@Autowired
-    @Qualifier("userServiceDetails")
-    private UserDetailsService userDetailsService;*/
-
     //若出错则用上面的方式注解,这个也是可以的
     @Autowired
     private UserServiceDetails userDetailsService;
@@ -38,6 +34,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthenticationPointHandler authenticationPointHandler;
+
     @Autowired
     private AccessDeniedService accessDeniedService;
 
@@ -72,7 +69,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         //第1步：解决跨域问题。cors 预检请求放行,让Spring security 放行所有preflight request（cors 预检请求）
         http.authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
         //第2步：让Security永远不会创建HttpSession，它不会使用HttpSession来获取SecurityContext
-        http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().headers().cacheControl();
+        //http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().headers().cacheControl();
+        http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         //第3步：请求权限配置,放行注册API请求，其它任何请求都必须经过身份验证.
         http.authorizeRequests().antMatchers(HttpMethod.POST,ConfigFile.urls).permitAll()//注意还有请求方式
         .anyRequest().authenticated();//不走动态加载权限的处理
@@ -84,6 +82,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);
 
         //第6步：处理异常情况：认证失败和权限不足
+        // todo,要是没有这个则跳转到登录界面
         http.exceptionHandling().authenticationEntryPoint(authenticationPointHandler).accessDeniedHandler(accessDeniedService);
 
         //第7步：登录,因为使用前端发送JSON方式进行登录，所以登录模式不设置也是可以的。
@@ -91,8 +90,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
         //第8步：退出
         http.logout().addLogoutHandler(logoutService).logoutSuccessHandler(logoutSuccessService);
-
-        //http.addFilterAfter(afterCompleteFilter,UsernamePasswordAuthenticationFilter.class);
     }
 
     /**

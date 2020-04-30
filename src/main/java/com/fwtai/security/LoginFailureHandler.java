@@ -1,6 +1,6 @@
 package com.fwtai.security;
 
-import com.baomidou.mybatisplus.extension.api.R;
+import com.fwtai.tool.ToolClient;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -12,14 +12,14 @@ import java.io.IOException;
 
 /**
  * 登录失败操作
- */
+*/
 @Component
-public class LoginFailureHandler extends JSONAuthentication implements AuthenticationFailureHandler{
+public class LoginFailureHandler implements AuthenticationFailureHandler{
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request,HttpServletResponse response,AuthenticationException e) throws IOException, ServletException{
-        R<String> data = R.failed("登录失败:" + e.getMessage());
-        //输出
-        this.WriteJSON(request,response,data);
+    public void onAuthenticationFailure(final HttpServletRequest request,final HttpServletResponse response,final AuthenticationException e){
+        final String msg = "用户名或密码错误0001:" + e.getMessage();
+        final String json = ToolClient.exceptionJson(msg);
+        ToolClient.responseJson(json,response);
     }
 }

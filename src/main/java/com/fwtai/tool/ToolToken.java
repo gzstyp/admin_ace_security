@@ -29,7 +29,7 @@ public class ToolToken{
 
     public static final String roles = "roles";
 
-    private final static long expiry = 1000 * 60 * 60;//1个小时
+    private final static long expiry = 1000 * 60 * 45;//1个小时
 
     private final static String issuer = "贵州富翁泰科技有限责任公司";
 
@@ -44,6 +44,10 @@ public class ToolToken{
         return claimsResolver.apply(claims);
     }
 
+    public Claims parse(final String token){
+        return extractAllClaims(token);
+    }
+
     private Claims extractAllClaims(final String token){
         final Key key = Keys.hmacShaKeyFor(secret.getBytes());
         final JwtParserBuilder builder = Jwts.parserBuilder();
@@ -51,7 +55,7 @@ public class ToolToken{
     }
 
     //是否有效
-    public Boolean isTokenExpired(final String token){
+    private Boolean isTokenExpired(final String token){
         return extractClaim(token,Claims::getExpiration).before(new Date());
     }
 

@@ -1,5 +1,6 @@
 package com.fwtai.security;
 
+import com.fwtai.config.ConfigFile;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
@@ -13,20 +14,12 @@ import javax.servlet.http.HttpServletResponse;
  * 退出Handler
  */
 @Component
-public class LogoutService extends JSONAuthentication implements LogoutHandler {
-
-    private String header = "Authorization";
+public class LogoutService implements LogoutHandler {
 
     @Override
-    public void logout(HttpServletRequest request,HttpServletResponse response,Authentication authentication) {
-
-        String headerToken = request.getHeader(header);
-        System.out.println("logout header Token = " + headerToken);
-        System.out.println("logout request getMethod = " + request.getMethod());
-        //
-        if (!StringUtils.isEmpty(headerToken)) {
-            //postMan测试时，自动加入的前缀，要去掉。
-            String token = headerToken.replace("Bearer", "").trim();
+    public void logout(final HttpServletRequest request,final HttpServletResponse response,final Authentication authentication) {
+        final String token = request.getHeader(ConfigFile.TOKEN_HEADER);
+        if (!StringUtils.isEmpty(token)) {
             System.out.println("authentication = " + authentication);
             SecurityContextHolder.clearContext();
         }

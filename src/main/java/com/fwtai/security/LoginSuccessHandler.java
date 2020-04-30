@@ -1,7 +1,7 @@
 package com.fwtai.security;
 
-import com.baomidou.mybatisplus.extension.api.R;
 import com.fwtai.bean.UserDataDetails;
+import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,7 +20,7 @@ import java.util.Map;
  * 登录成功操作并返回token
  */
 @Component
-public class LoginSuccessHandler extends JSONAuthentication implements AuthenticationSuccessHandler{
+public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 
     @Autowired
     private ToolToken toolToken;
@@ -39,9 +39,7 @@ public class LoginSuccessHandler extends JSONAuthentication implements Authentic
         //map.put("auth",userDetails.getAuthorities());
         //map.put("menus",menus);
         map.put("token",token);
-        //装入token
-        final R<Map<String,Object>> data = R.ok(map);
-        //输出
-        this.WriteJSON(request,response,data);
+        final String json = ToolClient.queryJson(map);
+        ToolClient.responseJson(json,response);
     }
 }

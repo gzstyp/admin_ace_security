@@ -1,5 +1,7 @@
 package com.fwtai.security;
 
+import com.fwtai.config.FlagToken;
+import com.fwtai.config.RenewalToken;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,8 @@ public final class AuthInterceptor implements HandlerInterceptor{
 
     @Override
     public void afterCompletion(final HttpServletRequest request,final HttpServletResponse response,final Object handler,final Exception exception) throws Exception{
+        FlagToken.remove();
+        RenewalToken.remove();
         System.out.println("*************************afterCompletion*************************");
     }
 }

@@ -938,7 +938,7 @@ public final class ToolClient implements Serializable{
     }
 
     /**
-     * 返回没有操作权限的code=401,msg=没有操作权限
+     * 返回没有操作权限的code=401,msg=没有操作权限(没有访问权限)
      * @param
      * @作者 田应平
      * @QQ 444141300
@@ -948,6 +948,19 @@ public final class ToolClient implements Serializable{
         final JSONObject json = new JSONObject();
         json.put(ConfigFile.code,ConfigFile.code401);
         json.put(ConfigFile.msg,ConfigFile.msg401);
+        return json.toJSONString();
+    }
+
+    /**
+     * 账号或密码不正确
+     * @作者 田应平
+     * @QQ 444141300
+     * @创建时间 2020/5/1 0:16
+    */
+    public final static String invalidUserInfo(){
+        final JSONObject json = new JSONObject();
+        json.put(ConfigFile.code,ConfigFile.code206);
+        json.put(ConfigFile.msg,ConfigFile.msg206);
         return json.toJSONString();
     }
 
