@@ -11,9 +11,15 @@ package com.fwtai.config;
 */
 public final class ConfigFile{
 
-    public final static String[] urls = {"/user/register"};
+    public final static String URL_LOGIN_PAGE = "/login.html";//登录页面
 
-    public static final String TOKEN_HEADER = "Authorization";
+    public final static String URL_REGISTER = "/user/register";//注册添加接口
+
+    public final static String URL_PROCESSING = "/login";//登录认证接口,security默认的接口
+
+    public final static String[] IGNORE_URLS = {"/error",URL_LOGIN_PAGE,URL_REGISTER,URL_PROCESSING,"/user/logout","/bootstrap/**","/*.ico","/css/**","/images/**","/js/**","/webjars/**","/swagger/**","/v2/api-docs","/swagger-ui.html","/swagger-resources/**","/v1.0/**","/v2/**","/images/**","/avatars/**","/fonts/**","/img/**"};
+
+    public final static String TOKEN_HEADER = "Authorization";
 
     /**统一全局的code的状态码json关键字key关键字响应给客户端*/
     public final static String code = "code";
