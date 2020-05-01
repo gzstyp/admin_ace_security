@@ -26,12 +26,12 @@ public class WebMvcConfig implements WebMvcConfigurer{
             .allowedHeaders("*")
             .exposedHeaders("access-control-allow-headers","access-control-allow-methods","access-control-allow-origin","access-control-max-age","X-Frame-Options")
             .allowCredentials(true)
-            .maxAge(3600);
+            .maxAge(3600l);
     }
 
     /**
      * 授权拦截的路径 addPathPatterns：拦截的路径 excludePathPatterns：不拦截的路径
-     */
+    */
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor()).addPathPatterns("/**").excludePathPatterns(ConfigFile.urls);
