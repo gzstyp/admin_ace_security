@@ -14,7 +14,7 @@ import java.util.Collection;
  * @Email service@yinlz.com
  * @官网 <url>http://www.yinlz.com</url>
 */
-public class UserDataDetails implements UserDetails {
+public class JwtUser implements UserDetails {
 
     private String userId;
 
@@ -26,12 +26,12 @@ public class UserDataDetails implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDataDetails(){}
+    public JwtUser(){}
 
     /**
      * 不含角色和权限,用于身份认证
     */
-    public UserDataDetails(final String userId,final String username,final String password,final Integer enabled){
+    public JwtUser(final String userId,final String username,final String password,final Integer enabled){
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -41,7 +41,7 @@ public class UserDataDetails implements UserDetails {
     /**
      * 含有角色和权限,用于token认证通过后获取全部的角色和权限
     */
-    public UserDataDetails(final String userId,final String username,final String password,final Integer enabled,final Collection<? extends GrantedAuthority> authorities) {
+    public JwtUser(final String userId,final String username,final String password,final Integer enabled,final Collection<? extends GrantedAuthority> authorities) {
         this.userId = userId;
         this.username = username;
         this.password = password;

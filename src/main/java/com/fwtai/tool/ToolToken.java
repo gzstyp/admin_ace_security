@@ -1,6 +1,6 @@
 package com.fwtai.tool;
 
-import com.fwtai.bean.UserDataDetails;
+import com.fwtai.bean.JwtUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParserBuilder;
@@ -73,14 +73,14 @@ public class ToolToken{
     }
 
     // setSubject 不能和s etClaims() 同时使用,如果用不到 userId() 的话可以把setId的值设为 userName !!!
-    public String generateToken(final UserDataDetails userDataDetails){
+    public String generateToken(final JwtUser jwtUser){
         final long date = System.currentTimeMillis();
         final Key key = Keys.hmacShaKeyFor(secret.getBytes());
         final JwtBuilder builder = Jwts.builder().signWith(key,SignatureAlgorithm.HS384);
-        final Collection<? extends GrantedAuthority> authorities = userDataDetails.getAuthorities();
+        final Collection<? extends GrantedAuthority> authorities = jwtUser.getAuthorities();
         if(authorities != null && authorities.size() > 0){
             builder.claim(this.roles,authorities);
         }
-        return builder.setId(userDataDetails.getUserId()).setIssuer(issuer).setIssuedAt(new Date(date)).setExpiration(new Date(date + expiry)).compact();
+        return builder.setId(jwtUser.getUserId()).setIssuer(issuer).setIssuedAt(new Date(date)).setExpiration(new Date(date + expiry)).compact();
     }
 }
