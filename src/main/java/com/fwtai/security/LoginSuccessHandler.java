@@ -2,7 +2,7 @@ package com.fwtai.security;
 
 import com.fwtai.bean.JwtUser;
 import com.fwtai.tool.ToolClient;
-import com.fwtai.tool.ToolToken;
+import com.fwtai.tool.ToolJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +23,7 @@ import java.util.Map;
 public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 
     @Autowired
-    private ToolToken toolToken;
+    private ToolJWT toolToken;
 
     @Override
     public void onAuthenticationSuccess(final HttpServletRequest request,final HttpServletResponse response,final Authentication authentication) throws IOException, ServletException{
@@ -31,7 +31,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
         final JwtUser jwtUser = (JwtUser) authentication.getPrincipal();
         SecurityContextHolder.getContext().setAuthentication(authentication);
         //取token,先去缓存中找,好的解决方案,登录成功后token存储到缓存数据库中,只要token还在过期内，不需要每次重新生成
-        final String token = toolToken.generateToken(jwtUser.getUserId());
+        final String token = toolToken.expireRefreshToken(jwtUser.getUserId());
         //加载前端菜单
         //final List<SysFrontendMenuTable> menus = service.getMenusByUserName(userDetails.getUsername());
         final Map<String,Object> map = new HashMap<>(3);

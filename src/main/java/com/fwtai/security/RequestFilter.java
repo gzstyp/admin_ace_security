@@ -3,7 +3,7 @@ package com.fwtai.security;
 import com.fwtai.config.ConfigFile;
 import com.fwtai.config.FlagToken;
 import com.fwtai.service.UserServiceDetails;
-import com.fwtai.tool.ToolToken;
+import com.fwtai.tool.ToolJWT;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class RequestFilter extends OncePerRequestFilter {
     private UserServiceDetails userDetailsService;
 
     @Autowired
-    private ToolToken toolToken;
+    private ToolJWT toolToken;
 
     private String header = "Authorization";
 
@@ -57,7 +57,7 @@ public class RequestFilter extends OncePerRequestFilter {
             //注意：刷新获得新token是在token过期时间内有效。
             //如果token本身的过期（1周），强制登录，生成新token。
             try {
-                toolToken.parse(token);
+                toolToken.parser(token);
                 //通过令牌获取用户名称
                 final String userId = toolToken.extractUserId(token);
                 //判断用户不为空，且SecurityContextHolder授权信息还是空的

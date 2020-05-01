@@ -1,7 +1,7 @@
 package com.fwtai.service;
 
-import com.fwtai.bean.SysUser;
 import com.fwtai.bean.JwtUser;
+import com.fwtai.bean.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
