@@ -7,7 +7,6 @@ import com.fwtai.service.UserServiceDetails;
 import com.fwtai.tool.ToolJWT;
 import com.fwtai.tool.ToolString;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -56,8 +55,7 @@ public class RequestFilter extends OncePerRequestFilter {
         //final String refreshToken = request.getHeader(ConfigFile.refreshToken);
         //final String token = request.getHeader(header);
         if(refresh != null && access != null){
-            //判断令牌是否过期，默认是一周
-            //比较好的解决方案是：
+            //判断令牌是否过期，默认是一周,比较好的解决方案是：
             //登录成功获得token后，将token存储到数据库（redis）
             //将数据库版本的token设置过期时间为15~30分钟
             //如果数据库中的token版本过期，重新刷新获取新的token
@@ -68,12 +66,11 @@ public class RequestFilter extends OncePerRequestFilter {
             } catch (final Exception e) {
                 System.out.println(e.getClass());
                 if(e instanceof ExpiredJwtException){
-                    System.out.println("该更换token了呢");
                     //标记为 该更换token了呢
                     FlagToken.set(1);
                     RenewalToken.set(access);
                     //chain.doFilter(request,response);
-                }else if(e instanceof JwtException){
+                }else{
                     //标记为 token 无效
                     FlagToken.set(2);
                     System.out.println("无效的token");
@@ -98,14 +95,15 @@ public class RequestFilter extends OncePerRequestFilter {
                     }
                 }
             } catch (final Exception exception){
-                System.out.println(exception.getClass());
                 RenewalToken.remove();
-                if(exception instanceof ExpiredJwtException){
-                    System.out.println("你真的需要重新登录2");
+                System.out.println("你真的需要重新登录");
+                FlagToken.set(3);
+                /*if(exception instanceof ExpiredJwtException){
+                    System.out.println("你真的需要重新登录");
                     FlagToken.set(3);
                 }else{
                     FlagToken.set(2);
-                }
+                }*/
             }
             //chain.doFilter(request, response);
         }
