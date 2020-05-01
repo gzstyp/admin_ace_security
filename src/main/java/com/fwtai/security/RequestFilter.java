@@ -2,8 +2,10 @@ package com.fwtai.security;
 
 import com.fwtai.config.ConfigFile;
 import com.fwtai.config.FlagToken;
+import com.fwtai.config.RenewalToken;
 import com.fwtai.service.UserServiceDetails;
 import com.fwtai.tool.ToolJWT;
+import com.fwtai.tool.ToolString;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.annotation.Resource;
@@ -34,8 +35,6 @@ public class RequestFilter extends OncePerRequestFilter {
     @Autowired
     private ToolJWT toolToken;
 
-    private String header = "Authorization";
-
     @Override
     protected void doFilterInternal(final HttpServletRequest request,final HttpServletResponse response,final FilterChain chain) throws ServletException, IOException {
         final String uri = request.getRequestURI();
@@ -47,8 +46,16 @@ public class RequestFilter extends OncePerRequestFilter {
                 return;
             }
         }
-        final String token = request.getHeader(header);
-        if (!StringUtils.isEmpty(token)){
+        final String refresh_token = ToolString.wipeString(request.getHeader(ConfigFile.REFRESH_TOKEN));
+        final String access_token = ToolString.wipeString(request.getHeader(ConfigFile.ACCESS_TOKEN));
+        final String url_refresh_token = ToolString.wipeString(request.getParameter(ConfigFile.REFRESH_TOKEN));
+        final String url_access_token = ToolString.wipeString(request.getParameter(ConfigFile.ACCESS_TOKEN));
+        final String refresh = refresh_token == null ? url_refresh_token : refresh_token;
+        final String access = access_token == null ? url_access_token : access_token;
+
+        //final String refreshToken = request.getHeader(ConfigFile.refreshToken);
+        //final String token = request.getHeader(header);
+        if(refresh != null && access != null){
             //判断令牌是否过期，默认是一周
             //比较好的解决方案是：
             //登录成功获得token后，将token存储到数据库（redis）
@@ -57,16 +64,31 @@ public class RequestFilter extends OncePerRequestFilter {
             //注意：刷新获得新token是在token过期时间内有效。
             //如果token本身的过期（1周），强制登录，生成新token。
             try {
-                toolToken.parser(token);
+                toolToken.parser(refresh);
+            } catch (final Exception e) {
+                System.out.println(e.getClass());
+                if(e instanceof ExpiredJwtException){
+                    System.out.println("该更换token了呢");
+                    //标记为 该更换token了呢
+                    FlagToken.set(1);
+                    RenewalToken.set(access);
+                    //chain.doFilter(request,response);
+                }else if(e instanceof JwtException){
+                    //标记为 token 无效
+                    FlagToken.set(2);
+                    System.out.println("无效的token");
+                }
+            }
+            try {
                 //通过令牌获取用户名称
-                final String userId = toolToken.extractUserId(token);
+                final String userId = toolToken.extractUserId(access);
                 //判断用户不为空，且SecurityContextHolder授权信息还是空的
                 final SecurityContext context = SecurityContextHolder.getContext();
                 if (userId != null && context.getAuthentication() == null) {
                     //通过用户信息得到UserDetails
                     final UserDetails userDetails = userDetailsService.getUserById(userId);
                     //验证令牌有效性
-                    final boolean validata = toolToken.validateToken(token,userId);;
+                    final boolean validata = toolToken.validateToken(access,userId);;
                     if (validata){
                         // 将用户信息存入 authentication，方便后续校验,这个方法是要保存角色权限信息的
                         final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
@@ -75,17 +97,14 @@ public class RequestFilter extends OncePerRequestFilter {
                         context.setAuthentication(authentication);
                     }
                 }
-            } catch (final Exception e) {
-                System.out.println(e.getClass());
-                if(e instanceof ExpiredJwtException){
-                    System.out.println("该更换token了呢");
-                    //标记为 该更换token了呢
-                    FlagToken.set(1);
-                    //chain.doFilter(request,response);
-                }else if(e instanceof JwtException){
-                    //标记为 token 无效
+            } catch (final Exception exception){
+                System.out.println(exception.getClass());
+                RenewalToken.remove();
+                if(exception instanceof ExpiredJwtException){
+                    System.out.println("你真的需要重新登录2");
+                    FlagToken.set(3);
+                }else{
                     FlagToken.set(2);
-                    System.out.println("无效的token");
                 }
             }
             //chain.doFilter(request, response);

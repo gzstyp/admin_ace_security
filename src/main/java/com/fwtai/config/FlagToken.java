@@ -17,6 +17,7 @@ public final class FlagToken{
     /**
         1.是该更换token了呢;<br/>
         2.无效的token;<br/>
+        3.需要重新登录;<br/>
      */
     public static Integer get(){
         return flag.get();

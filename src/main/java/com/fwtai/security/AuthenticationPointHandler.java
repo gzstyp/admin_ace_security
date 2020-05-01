@@ -26,13 +26,15 @@ public class AuthenticationPointHandler implements AuthenticationEntryPoint{
         if(flag != null){
             switch (flag){
                 case 1:
-                    RenewalToken.set("更换token");
-                    json = ToolClient.createJsonFail("更换token");
+                    //RenewalToken.set("更换access_token");
+                    //json = ToolClient.createJsonFail("更换access_token");
+                    System.out.println("更换access_token"+RenewalToken.get());
                     break;
                 case 2:
-                    json = ToolClient.createJsonFail("无效的token");
+                    json = ToolClient.tokenInvalid();
                     break;
                 case 3:
+                    json = ToolClient.tokenInvalid();
                     break;
                 default:
                     break;

@@ -1,6 +1,7 @@
 package com.fwtai.security;
 
 import com.fwtai.bean.JwtUser;
+import com.fwtai.config.ConfigFile;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolJWT;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +32,19 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
         final JwtUser jwtUser = (JwtUser) authentication.getPrincipal();
         SecurityContextHolder.getContext().setAuthentication(authentication);
         //取token,先去缓存中找,好的解决方案,登录成功后token存储到缓存数据库中,只要token还在过期内，不需要每次重新生成
-        final String token = toolToken.expireRefreshToken(jwtUser.getUserId());
+        final String refresh_token = toolToken.expireRefreshToken(jwtUser.getUserId());
+        final String access_token = toolToken.expireAccessToken(jwtUser.getUserId());
         //加载前端菜单
         //final List<SysFrontendMenuTable> menus = service.getMenusByUserName(userDetails.getUsername());
         final Map<String,Object> map = new HashMap<>(3);
         //map.put("username",userDetails.getUsername());
         //map.put("auth",userDetails.getAuthorities());
         //map.put("menus",menus);
-        map.put("token",token);
+        map.put(ConfigFile.REFRESH_TOKEN,refresh_token);
+        map.put(ConfigFile.ACCESS_TOKEN,access_token);
         final String json = ToolClient.queryJson(map);
+        response.addHeader(ConfigFile.REFRESH_TOKEN,refresh_token);
+        response.addHeader(ConfigFile.ACCESS_TOKEN,access_token);
         ToolClient.responseJson(json,response);
     }
 }
