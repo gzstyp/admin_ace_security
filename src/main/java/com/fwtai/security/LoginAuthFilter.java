@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
 /**
- * 登录认证过滤器,在此处理锁定功能
+ * 登录认证过滤器,在此处理锁定功能!!!
 */
 public class LoginAuthFilter extends UsernamePasswordAuthenticationFilter{
 
@@ -39,6 +39,7 @@ public class LoginAuthFilter extends UsernamePasswordAuthenticationFilter{
             setDetails(request,authRequest);
             return this.getAuthenticationManager().authenticate(authRequest);
         }else{
+            //在此处理锁定功能!!!
             ToolClient.responseJson(ToolClient.invalidUserInfo(),response);
             return null;
             //throw new AuthExceptionHandler("用户名或密码错误");
