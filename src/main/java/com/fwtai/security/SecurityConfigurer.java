@@ -63,7 +63,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         builder.userDetailsService(userDetailsService).passwordEncoder(passworder);
     }
 
-    //处理静态资源
+    //处理静态资源或忽略的接口
     @Override
     public void configure(final WebSecurity web) throws Exception{
         web.ignoring().antMatchers(ConfigFile.IGNORE_URLS);
