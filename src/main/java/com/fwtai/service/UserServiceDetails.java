@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 登录处理,实现登录认证及权限鉴权
+ * 登录处理,实现登录认证及权限鉴权,主要职责就是认证用户名和密码是否和该用户的权限角色集合
 */
 @Service
 public class UserServiceDetails implements UserDetailsService {
@@ -36,6 +36,27 @@ public class UserServiceDetails implements UserDetailsService {
             return new JwtUser(user.getKid(),user.getUserName(),user.getUserPassword(),user.getEnabled());
         }
     }
+    /*
+
+     其实可以使用security提供的类来返回
+
+     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException{
+        final SqlSessionTemplate sqlSession = dao.getSqlSession();
+        final List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        final HashMap<String,String> user = dao.queryForEntity("");//查询用户
+        if(user != null){
+            //查询权限
+            final List<HashMap<String,Object>> lists = dao.queryForListHashMap("");
+            lists.forEach(list -> {
+                GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(String.valueOf(list.get("permission")));
+                grantedAuthorities.add(grantedAuthority);
+            });
+        }
+        final List<HashMap<String,Object>> list = dao.queryForListHashMap("");
+        return new org.springframework.security.core.userdetails.User(username,user.get("password"),grantedAuthorities);
+    }
+
+     */
 
     /**
      * 通过userId查找用户的全部角色和权限的信息
