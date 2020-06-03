@@ -13,7 +13,7 @@
     <version>v1.0.0</version>
     <description>
 
-        基于 Spring Boot 2 + spring security + jwt 构建前后端分离,双token
+        基于 Spring Boot 2 + spring security + jwt 构建前后端分离,双token,多数据源
 
         流程:
 
