@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * token拦截器(最先请求的拦截器)||更换token在这里实现
- */
+ * token拦截器(最先请求的拦截器)||更换token在这里实现[用于每次外部对接口请求时的Token处理,其中 Once 是每一次,pre是 预先]
+*/
 @Component
 public class RequestFilter extends OncePerRequestFilter {
 
