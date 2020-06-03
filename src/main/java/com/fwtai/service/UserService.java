@@ -2,7 +2,7 @@ package com.fwtai.service;
 
 import com.fwtai.bean.SysUser;
 import com.fwtai.components.Passworder;
-import com.fwtai.dao.DaoHandle;
+import com.fwtai.dao.UserDao;
 import com.fwtai.tool.ToolClient;
 import com.fwtai.tool.ToolString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,25 +24,25 @@ import java.util.List;
 public class UserService{
 
     @Autowired
-    private DaoHandle daoHandle;
+    private UserDao userDao;
 
     @Autowired
     private Passworder passworder;
 
     public boolean checkLogin(final String username,final String rawPassword){
-        final String password = daoHandle.queryForString("sys_user.login",username);
+        final String password = userDao.queryLogin(username);
         if(password == null)return false;
         return passworder.matches(rawPassword,password);
     }
 
     // 仅仅获取用户userid的角色和(不含权限)
     public List<String> getRoleByUserId(final String userId){
-        return daoHandle.queryListEntity("sys_user.getRoleByUserId",userId);
+        return userDao.getRoleByUserId(userId);
     }
 
     // 仅仅获取用户userId的角色和权限
     public List<String> getRolePermissions(final String userId){
-        return daoHandle.queryListEntity("sys_user.getRolePermissions",userId);
+        return userDao.getRolePermissions(userId);
     }
 
     /**
@@ -53,7 +53,7 @@ public class UserService{
      * @创建时间 2020/5/1 0:54
     */
     public SysUser getUserByUserName(final String username){
-        return daoHandle.queryForEntity("sys_user.getUserByUserName",username);
+        return userDao.getUserByUserName(username);
     }
 
     /**
@@ -64,19 +64,16 @@ public class UserService{
      * @创建时间 2020/5/1 0:53
     */
     public SysUser getUserById(final String userId){
-        return daoHandle.queryForEntity("sys_user.getUserById",userId);
+        return userDao.getUserById(userId);
     }
 
     public String register(final HashMap<String,String> params){
         final String p_username = "username";
         final String p_password = "password";
         final String validate = ToolClient.validateField(params,p_username,p_password);
-        if(validate != null)
-            return validate;
+        if(validate != null)return validate;
         params.put("kid",ToolString.getIdsChar32());
         params.put("password",passworder.encode(params.get(p_password)));
-        final int rows = daoHandle.execute("sys_user.addUser",params);
-        daoHandle.execute("sys_user.addPassword",params);
-        return ToolClient.executeRows(rows);
+        return userDao.addRegister(params);
     }
 }

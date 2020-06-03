@@ -1,4 +1,4 @@
-package com.fwtai.dao;
+package com.fwtai.datasource;
 
 import com.fwtai.bean.PageFormData;
 import com.fwtai.config.ConfigFile;
@@ -11,20 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * dao底层操作处理工具类
- * @作者 田应平
- * @版本 v1.0
- * @创建时间 2020/4/29 20:42
- * @QQ号码 444141300
- * @Email service@yinlz.com
- * @官网 <url>http://www.yinlz.com</url>
-*/
+/**dao底层操作处理工具类*/
 @Repository
 public class DaoHandle{
-	
-	@Resource(name="sqlSessionTemplate")
-	private SqlSessionTemplate sqlSession;
+
+    @Resource(name="sqlSessionHandle")
+    private SqlSessionTemplate sqlSession;
 
 	/**
 	 * 通用的更新;删除;插入添加
@@ -47,16 +39,6 @@ public class DaoHandle{
 	 * @主页 http://www.fwtai.com
 	*/
 	public int execute(final String sqlMapId,final Object objParam){
-		return sqlSession.update(sqlMapId,objParam);
-	}
-	
-	/**批量插入|更新|删除*/
-	public int executeBatch(final String sqlMapId){
-		return sqlSession.update(sqlMapId);
-	}
-	
-	/**批量插入|更新|删除,objParam可以是List<HashMap<String, Object>>*/
-	public int executeBatch(final String sqlMapId, final Object objParam){
 		return sqlSession.update(sqlMapId,objParam);
 	}
 
@@ -91,7 +73,7 @@ public class DaoHandle{
 	 * @创建时间 2016年12月24日 23:00:55
 	 * @QQ号码 444141300
 	 * @主页 http://www.fwtai.com
-	 */
+	*/
 	public Long queryForLong(final String sqlMapId){
 		return sqlSession.selectOne(sqlMapId);
 	}
@@ -103,7 +85,7 @@ public class DaoHandle{
 	 * @创建时间 2016年12月24日 23:01:35
 	 * @QQ号码 444141300
 	 * @主页 http://www.fwtai.com
-	 */
+	*/
 	public Long queryForLong(final String sqlMapId, final Object objParam){
 		return sqlSession.selectOne(sqlMapId,objParam);
 	}
@@ -188,7 +170,7 @@ public class DaoHandle{
 	 * @QQ号码 444141300
 	 * @主页 http://www.fwtai.com
 	*/
-	public HashMap<String, Object> queryForHashMap(final String sqlMapId){
+	public HashMap<String,Object> queryForHashMap(final String sqlMapId){
 		return sqlSession.selectOne(sqlMapId);
 	}
 
@@ -291,7 +273,7 @@ public class DaoHandle{
      * @QQ号码 444141300
      * @主页 http://www.yinlz.com
     */
-    public <T> List<T> selectListEntity(final String sqlMapId){
+    public <T> List<T> queryListEntity(final String sqlMapId){
         return sqlSession.selectList(sqlMapId);
     }
 
@@ -303,7 +285,15 @@ public class DaoHandle{
      * @QQ号码 444141300
      * @主页 http://www.yinlz.com
     */
-    public <T> List<T> selectListEntity(final String sqlMapId, final Object objParam){
+    public <T> List<T> queryListEntity(final String sqlMapId, final Object objParam){
+        return sqlSession.selectList(sqlMapId, objParam);
+    }
+
+    public List<String> queryListString(final String sqlMapId){
+        return sqlSession.selectList(sqlMapId);
+    }
+
+    public List<String> queryListString(final String sqlMapId, final Object objParam){
         return sqlSession.selectList(sqlMapId, objParam);
     }
 
@@ -317,7 +307,7 @@ public class DaoHandle{
     public List<HashMap<String,String>> queryForListString(final String sqlMapId){
         return sqlSession.selectList(sqlMapId);
     }
-
+    
     /**
      * 请谨慎使用,如果报错则换成返回List<HashMap<String,Object>>
      * @param
@@ -329,30 +319,14 @@ public class DaoHandle{
         return sqlSession.selectList(sqlMapId,objParam);
     }
 
-    /**
-     * 返回List集合
-     * @作者 田应平
-     * @返回值类型 int
-     * @创建时间 2016年12月24日 23:00:14
-     * @QQ号码 444141300
-     * @主页 http://www.yinlz.com
-     */
-    public <T> List<T> queryListEntity(final String sqlMapId){
-        return sqlSession.selectList(sqlMapId);
+    public HashMap<String,String> queryForHashMapString(final String sqlMapId){
+        return sqlSession.selectOne(sqlMapId);
     }
 
-    /**
-     * 带参数的LIST
-     * @作者 田应平
-     * @返回值类型 int
-     * @创建时间 2016年12月24日 23:00:14
-     * @QQ号码 444141300
-     * @主页 http://www.yinlz.com
-     */
-    public <T> List<T> queryListEntity(final String sqlMapId, final Object objParam){
-        return sqlSession.selectList(sqlMapId, objParam);
+    public HashMap<String,String> queryForHashMapString(final String sqlMapId,final Object objParam){
+        return sqlSession.selectOne(sqlMapId,objParam);
     }
-
+	
 	/**
 	 * 查询PageFormData数据对象
 	 * @param sqlMapId
@@ -376,7 +350,7 @@ public class DaoHandle{
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-	public PageFormData queryForPageFormData(final String sqlMapId, final Object objParam){
+	public PageFormData queryForPageFormData(final String sqlMapId,final Object objParam){
 		return sqlSession.selectOne(sqlMapId,objParam);
 	}
 
@@ -403,7 +377,7 @@ public class DaoHandle{
 	 * @QQ号码 444141300
 	 * @官网 http://www.fwtai.com
 	*/
-	public List<PageFormData> queryForListPageFormData(final String sqlMapId,final Object objParam){
+	public List<PageFormData> queryForListPageFormData(final String sqlMapId, final Object objParam){
 		return sqlSession.selectList(sqlMapId,objParam);
 	}
 	
@@ -419,11 +393,9 @@ public class DaoHandle{
 	 * @主页 http://www.fwtai.com
 	*/
 	public HashMap<String,Object> queryForPage(final HashMap<String,Object> params,final String sqlMapIdListData,final String sqlMapIdTotal){
-		final HashMap<String, Object> map = new HashMap<String,Object>(0);
-		final Integer total = sqlSession.selectOne(sqlMapIdTotal,params);
-		final List<Object> list = sqlSession.selectList(sqlMapIdListData,params);
-		map.put(ConfigFile.total,total);
-		map.put(ConfigFile.data,list);
+		final HashMap<String,Object> map = new HashMap<String,Object>(2);
+		map.put(ConfigFile.total,sqlSession.selectOne(sqlMapIdTotal,params));
+		map.put(ConfigFile.rows,sqlSession.selectList(sqlMapIdListData,params));
 		return map;
 	}
 	
@@ -433,17 +405,15 @@ public class DaoHandle{
      * @param sqlMapIdListData 总条数总记录数的sql映射
      * @param sqlMapIdTotal 返回的list数据集合的sql映射
 	 * @作者 田应平
-	 * @返回值类型 HashMap< String,Object >,含total总条数总记录数;listData分页的数据
+	 * @返回值类型 HashMap<String,Object>,含total总条数总记录数;listData分页的数据
 	 * @创建时间 2017年1月10日 下午5:56:08
 	 * @QQ号码 444141300
 	 * @主页 http://www.fwtai.com
 	*/
 	public HashMap<String,Object> queryForPage(final PageFormData params,final String sqlMapIdListData,final String sqlMapIdTotal){
-		final HashMap<String, Object> map = new HashMap<String,Object>(0);
-		final Integer total = sqlSession.selectOne(sqlMapIdTotal,params);
-		final List<Object> list = sqlSession.selectList(sqlMapIdListData,params);
-		map.put(ConfigFile.total,total);
-		map.put(ConfigFile.data,list);
+        final HashMap<String,Object> map = new HashMap<String,Object>(2);
+		map.put(ConfigFile.total,sqlSession.selectOne(sqlMapIdTotal,params));
+		map.put(ConfigFile.rows,sqlSession.selectList(sqlMapIdListData,params));
 		return map;
 	}
 }

@@ -13,7 +13,7 @@
     <version>v1.0.0</version>
     <description>
 
-        基于 Spring Boot 2 + spring security + jwt 构建前后端分离
+        基于 Spring Boot 2 + spring security + jwt 构建前后端分离,双token
 
         流程:
 
@@ -51,6 +51,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.68</version>
+        </dependency>
+        <!--数据库动态切换-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.shiro</groupId>
