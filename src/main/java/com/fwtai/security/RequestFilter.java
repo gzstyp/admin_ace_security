@@ -37,6 +37,7 @@ public class RequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(final HttpServletRequest request,final HttpServletResponse response,final FilterChain chain) throws ServletException, IOException {
         final String uri = request.getRequestURI();
+        System.out.println("请求的uri-->"+uri);
         final String[] urls = ConfigFile.IGNORE_URLS;
         for(int x = 0; x < urls.length; x++){
             final String url = urls[x];
