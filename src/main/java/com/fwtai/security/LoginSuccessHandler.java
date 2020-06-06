@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * 登录成功操作并返回token
- */
+*/
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 

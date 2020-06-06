@@ -3,6 +3,15 @@ package com.fwtai.components;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * 密码校验器
+ * @作者 田应平
+ * @版本 v1.0
+ * @创建时间 2020/6/6 12:26
+ * @QQ号码 444141300
+ * @Email service@yinlz.com
+ * @官网 <url>http://www.yinlz.com</url>
+*/
 @Component
 public class Passworder extends BCryptPasswordEncoder {
 

@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  * 权限校验拒绝处理器(拒绝访问)
- */
+*/
 @Component
 public class AccessDeniedService implements AccessDeniedHandler{
 

@@ -14,7 +14,7 @@ import java.io.IOException;
 
 /**
  * 身份校验失败处理器，如 token 错误
- */
+*/
 @Component
 public class AuthenticationPointHandler implements AuthenticationEntryPoint{
 

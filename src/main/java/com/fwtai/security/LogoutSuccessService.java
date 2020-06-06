@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 成功退出处理器
- */
+ * 注销成功退出处理器
+*/
 @Component
 public class LogoutSuccessService implements LogoutSuccessHandler {
     @Override

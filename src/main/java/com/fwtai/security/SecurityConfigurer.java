@@ -27,12 +27,15 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserServiceDetails userDetailsService;
 
+    //token拦截器(最先请求的拦截器)
     @Autowired
     private RequestFilter requestFilter;
 
+    //身份校验失败处理器
     @Autowired
     private AuthenticationPointHandler authenticationPointHandler;
 
+    //权限校验拒绝处理器(拒绝访问)
     @Autowired
     private AccessDeniedService accessDeniedService;
 
@@ -40,6 +43,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;
 
+    //登录失败操作
     @Autowired
     private LoginFailureHandler loginFailureHandler;
 
@@ -47,9 +51,11 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Autowired
     private LogoutService logoutService;
 
+    //注销成功退出处理器
     @Autowired
     private LogoutSuccessService logoutSuccessService;
 
+    //密码校验器
     @Autowired
     private Passworder passworder;
 
