@@ -61,6 +61,4 @@ public class SysUser{
     public void setErrorTime(String errorTime){
         this.errorTime = errorTime;
     }
-
-
 }
