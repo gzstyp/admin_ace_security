@@ -23,15 +23,11 @@ import javax.servlet.http.HttpServletResponse;
 public class UserConrtroller{
 
     @Autowired
-    private HttpServletRequest request;
-
-    @Autowired
     private UserService userService;
 
     @PostMapping("/register")
-    public void register(final HttpServletResponse response){
+    public void register(final HttpServletRequest request,final HttpServletResponse response){
         final String json  = userService.register(ToolClient.getFormParams(request));
         ToolClient.responseJson(json,response);
     }
-
 }
