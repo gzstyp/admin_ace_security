@@ -42,6 +42,7 @@ public class LoginAuthFilter extends UsernamePasswordAuthenticationFilter{
             //在此处理锁定功能!!!
             ToolClient.responseJson(ToolClient.invalidUserInfo(),response);
             return null;
+            //return this.getAuthenticationManager().authenticate(null);//不能用这个，否则报错 NullPointerException
             //throw new AuthExceptionHandler("用户名或密码错误");
         }
     }
