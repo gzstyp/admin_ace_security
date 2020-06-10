@@ -28,6 +28,7 @@ public class ApiController{
         ToolClient.responseJson(json);
     }
 
+    // http://127.0.0.1:804/api/create
     @GetMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")//角色必须以大写的ROLE_开头(即数据库存的必须是以ROLE_开头)
     public void create(){

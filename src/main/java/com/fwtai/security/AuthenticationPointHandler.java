@@ -41,6 +41,9 @@ public class AuthenticationPointHandler implements AuthenticationEntryPoint{
             }
         }
         System.out.println("++++++++++++++"+exception.getMessage()+"++++++++++++++");
+        if(flag == null){
+            json = ToolClient.tokenInvalid();
+        }
         ToolClient.responseJson(json,response);
         // todo 处理 ThreadLocal
     }
