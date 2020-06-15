@@ -95,7 +95,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);
 
         //第6步：处理异常情况：认证失败和权限不足
-        // todo,要是没有这个则跳转到登录界面
+        // todo,要是没有这个则跳转到登录界面,处理未认证时跳转到登录页面(处理异常情况：认证失败和权限不足)
         http.exceptionHandling().authenticationEntryPoint(authenticationPointHandler).accessDeniedHandler(accessDeniedService);
 
         //第7步：登录(如果报错则使用下面的那个)
@@ -105,7 +105,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             .loginProcessingUrl(ConfigFile.URL_PROCESSING)
             .usernameParameter("username")
             .passwordParameter("password")
-            .permitAll();
+            .permitAll();//放开登录相关的url
 
         //第7步：登录,因为使用前端发送JSON方式进行登录，所以登录模式不设置也是可以的。
         //http.formLogin();
