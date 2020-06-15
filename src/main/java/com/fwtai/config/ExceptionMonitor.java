@@ -4,10 +4,6 @@ import com.fwtai.tool.ToolClient;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
-import org.apache.shiro.ShiroException;
-import org.apache.shiro.authc.ExpiredCredentialsException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -80,27 +76,6 @@ public class ExceptionMonitor{
         exception.printStackTrace();
         ToolClient.responseJson(ToolClient.exceptionJson("数字格式异常"),response);
     }
-
-    @ExceptionHandler(ShiroException.class)
-    public void shiroException(final Exception exception,final HttpServletResponse response){
-        exception.printStackTrace();
-        ToolClient.responseJson(ToolClient.notAuthorized(),response);
-    }
-
-    //认证异常,密钥认证过期
-    @ExceptionHandler(ExpiredCredentialsException.class)
-    public void expiredCredentialsException(final Exception exception,final HttpServletResponse response){
-        exception.printStackTrace();
-        ToolClient.responseJson(ToolClient.tokenInvalid(),response);
-    }
-
-    //认证异常,密钥错误
-    @ExceptionHandler(IncorrectCredentialsException.class)
-    public void incorrectCredentialsException(final Exception exception,final HttpServletResponse response){
-        exception.printStackTrace();
-        ToolClient.responseJson(ToolClient.exceptionJson("认证异常,账号或密码错误"),response);
-    }
-
     @ExceptionHandler(AccessDeniedException.class)
     public void accessDeniedException(final Exception exception,final HttpServletResponse response){
         //exception.printStackTrace();
@@ -111,19 +86,6 @@ public class ExceptionMonitor{
     @ExceptionHandler({SocketTimeoutException.class,MyBatisSystemException.class,DataAccessException.class})
     public void socketTimeoutException(final HttpServletResponse response){
         ToolClient.responseJson(ToolClient.exceptionJson("连接服务器超时,请重试……"),response);
-    }
-
-    //鉴权异常,没有权限访问此资源
-    @ExceptionHandler(UnauthorizedException.class)
-    public void unauthorizedException(final Exception exception,final HttpServletResponse response){
-        //exception.printStackTrace();
-        final String message = exception.getMessage();
-        if(message.contains("Subject does not have role [")){
-            //没有角色
-        }else if(message.contains("Subject does not have permission [")){
-            //没有权限
-        }
-        ToolClient.responseJson(ToolClient.notAuthorized(),response);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
